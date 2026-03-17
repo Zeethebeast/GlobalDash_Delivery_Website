@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | SwiftTrack{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="md:flex md:items-center md:justify-between mb-8">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 dark:text-white sm:text-3xl sm:truncate">
+                Your Deliveries
+            </h2>
+            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">View and track all packages associated with your
+                account.</p>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4 w-full md:w-auto">
+            <form action="{% url 'track_page' %}" method="GET"
+                class="flex w-full md:w-80 shadow-sm rounded-md overflow-hidden border border-gray-300 dark:border-gray-600 focus-within:ring-2 focus-within:ring-blue-500">
+                <input type="text" name="tracking_number" required
+                    class="block w-full px-4 py-2 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 placeholder-gray-500 focus:outline-none"
+                    placeholder="Enter Tracking ID...">
+                <button type="submit"
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none transition">
+                    Track
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Deliveries List -->
+    <div
+        class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg border border-gray-200 dark:border-gray-700">
+        {% if deliveries %}
+        <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+            {% for delivery in deliveries %}
+            <li>
+                <a href="{% url 'track_page' %}?tracking_number={{ delivery.tracking_number.number }}"
+                    class="block hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-150 ease-in-out">
+                    <div class="px-4 py-5 sm:px-6 flex items-center justify-between">
+                        <div class="flex flex-col">
+                            <p class="text-sm font-medium text-blue-600 dark:text-blue-400 truncate pb-1">
+                                {{ delivery.tracking_number.number }}
+                            </p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">
+                                From: <span class="font-medium text-gray-800 dark:text-gray-200">{{ delivery.sender
+                                    }}</span> &rarr;
+                                To: <span class="font-medium text-gray-800 dark:text-gray-200">{{ delivery.receiver
+                                    }}</span>
+                            </p>
+                            <p class="text-xs mt-1 text-gray-500 dark:text-gray-400">
+                                Route: <span class="font-medium text-indigo-600 dark:text-indigo-400">{{
+                                    delivery.departure_location|default:"Not specified" }}</span> &rarr;
+                                <span class="font-medium text-indigo-600 dark:text-indigo-400">{{
+                                    delivery.destination_location|default:"Not specified" }}</span>
+                            </p>
+                        </div>
+                        <div class="ml-2 flex-shrink-0 flex items-center space-x-4">
+                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    {% if delivery.statuses.first.status == 'DELIVERED' %} bg-green-100 text-green-800
+                                    {% elif delivery.statuses.first.status == 'IN_TRANSIT' %} bg-yellow-100 text-yellow-800
+                                    {% elif delivery.statuses.first.status == 'CANCELLED' %} bg-red-100 text-red-800
+                                    {% else %} bg-gray-100 text-gray-800 {% endif %}">
+                                {{ delivery.statuses.first.get_status_display|default:"Pending" }}
+                            </span>
+                            <!-- Angle Right Icon -->
+                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="text-center py-16">
+            <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No deliveries found</h3>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">You don't have any packages attached to this
+                account yet.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,310 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}SwiftTrack | Premium Logistics & Delivery Tracking{% endblock %}
+
+{% block content %}
+<!-- Dark Mode Wrapper container -->
+<div id="theme-wrapper"
+    class="transition-colors duration-500 bg-white dark:bg-gray-900 overflow-hidden relative min-h-screen pb-20">
+
+    <!-- Floating Graphics / Decor -->
+    <div
+        class="hidden lg:block absolute top-0 right-0 -mr-20 -mt-20 opacity-30 dark:opacity-10 pointer-events-none transform scale-150">
+        <svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(300,300)">
+                <path
+                    d="M124.9,-160.7C162.7,-119.5,195,-74.6,206.5,-23.4C218.1,27.7,208.9,85.1,175.7,131.6C142.4,178.1,85.2,213.7,28.5,219C-28.1,224.2,-84.3,199,-130.6,162.1C-176.9,125.2,-213.2,76.5,-223.3,22.7C-233.4,-31.2,-217.3,-90,-181.7,-133.5C-146,-177,-91,-205.1,-41.8,-189.6C7.4,-174.1,56.7,-114.9,124.9,-160.7Z"
+                    fill="#3B82F6" />
+            </g>
+        </svg>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative pt-20 pb-16 sm:pb-24 lg:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-10">
+        <div class="flex flex-col lg:flex-row items-center gap-12">
+            <div class="lg:w-1/2 text-center lg:text-left">
+                <span
+                    class="inline-block py-1 px-3 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 text-sm font-semibold tracking-wide mb-4">NEW:
+                    Live AI Routing</span>
+                <h1
+                    class="text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-6xl md:text-7xl leading-tight mb-6">
+                    Deliveries That <br />
+                    <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">Never
+                        Wait.</span>
+                </h1>
+                <p
+                    class="mt-6 max-w-md mx-auto text-lg text-gray-500 dark:text-gray-400 sm:text-xl md:max-w-3xl lg:mx-0 mb-10">
+                    Experience lightning-fast, ultra-secure logistics with real-time AI tracking. The modern solution
+                    for individuals and businesses.
+                </p>
+
+                <div class="mt-10 sm:flex sm:justify-center lg:justify-start gap-4">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}"
+                        class="w-full sm:w-auto flex items-center justify-center px-8 py-4 border border-transparent text-lg font-bold rounded-xl text-white bg-blue-600 hover:bg-blue-700 shadow-[0_0_20px_rgba(37,99,235,0.4)] transition hover:shadow-[0_0_25px_rgba(37,99,235,0.6)] transform hover:-translate-y-1">
+                        Go to Dashboard
+                    </a>
+                    {% else %}
+                    <a href="{% url 'login' %}"
+                        class="w-full sm:w-auto flex items-center justify-center px-8 py-4 border border-transparent text-lg font-bold rounded-xl text-white bg-blue-600 hover:bg-blue-700 shadow-[0_0_20px_rgba(37,99,235,0.4)] transition hover:shadow-[0_0_25px_rgba(37,99,235,0.6)] transform hover:-translate-y-1">
+                        Sign In to Track
+                    </a>
+                    <a href="{% url 'signup' %}"
+                        class="mt-4 sm:mt-0 w-full sm:w-auto flex items-center justify-center px-8 py-4 border-2 border-gray-200 dark:border-gray-700 text-lg font-bold rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition transform hover:-translate-y-1">
+                        Create Account
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Hero Image Asset -->
+            <div class="lg:w-1/2 relative">
+                <!-- Floating Decorative Elements -->
+                <div
+                    class="absolute -top-10 -left-10 w-32 h-32 bg-blue-400/20 dark:bg-blue-600/20 rounded-full blur-3xl animate-pulse">
+                </div>
+                <div
+                    class="absolute -bottom-10 -right-10 w-40 h-40 bg-indigo-500/20 dark:bg-indigo-700/20 rounded-full blur-3xl animate-pulse delay-700">
+                </div>
+
+                <div
+                    class="relative rounded-2xl overflow-hidden glass-effect border border-white/20 dark:border-gray-800 shadow-2xl p-2 transform transition hover:scale-[1.02] duration-500 z-10 w-full max-w-lg mx-auto">
+                    <img class="w-full rounded-xl object-cover h-96 bg-gray-100 dark:bg-gray-800"
+                        src="{% static 'images/truck.png' %}" alt="SwiftTrack Delivery Truck"
+                        onerror="this.src='https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- NEW SECTION 1: Speed & Reliability -->
+<div class="relative py-20 bg-white dark:bg-gray-900 transition-colors border-t border-gray-100 dark:border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row items-center gap-16">
+            <div class="lg:w-1/2">
+                <img src="{% static 'images/promo_speed.png' %}" alt="Speed and Reliability"
+                    class="rounded-3xl shadow-2xl w-full object-cover h-96 transform hover:scale-105 transition duration-500">
+            </div>
+            <div class="lg:w-1/2 text-left">
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl mb-6">
+                    Unmatched Reliability & Lightning Speed
+                </h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                    At the core of SwiftTrack is a commitment to speed that never sacrifices safety. We leverage
+                    advanced dynamic routing algorithms and a vast network of dedicated couriers to ensure your packages
+                    travel through the fastest possible arteries of the city.
+                </p>
+                <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                    Whether it's a critical document or a fragile gift, our proactive monitoring systems foresee delays
+                    before they happen, guaranteeing that your delivery arrives right on time, exactly when it's needed
+                    most. You trust us with your cargo, and we deliver on our promises.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- NEW SECTION 2: Global Reach -->
+<div class="relative py-20 bg-gray-50 dark:bg-gray-800/50 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row items-center gap-16">
+            <div class="lg:w-1/2 text-left order-2 lg:order-1">
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl mb-6">
+                    A Global Logistics Network At Your Fingertips
+                </h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                    Our reach extends far beyond local borders. With integrated hubs across continents and strategic
+                    partnerships with top-tier international freight carriers, we make the world feel smaller.
+                </p>
+                <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                    From custom clearance to final-mile delivery across the globe, our infrastructure is built to handle
+                    the complexities of international logistics effortlessly. Expand your business reach and send
+                    packages overseas with the exact same ease as sending them down the street. Our global command
+                    centers monitor international assets 24/7.
+                </p>
+            </div>
+            <div class="lg:w-1/2 order-1 lg:order-2">
+                <img src="{% static 'images/promo_global.png' %}" alt="Global Reach"
+                    class="rounded-3xl shadow-2xl w-full object-cover h-96 transform hover:scale-105 transition duration-500">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- NEW SECTION 3: Carousel of Operations -->
+<div class="relative py-24 bg-white dark:bg-gray-900 transition-colors border-y border-gray-100 dark:border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl mb-4">
+            Inside Our World-Class Operations
+        </h2>
+        <p class="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto">
+            Take a look behind the scenes at the people, facilities, and fleets that make up the heartbeat of
+            SwiftTrack. Transparency and excellence at every step of the journey.
+        </p>
+
+        <!-- Carousel Slider -->
+        <div
+            class="relative w-full max-w-5xl mx-auto overflow-hidden rounded-3xl shadow-2xl h-[500px] group bg-gray-100 dark:bg-gray-800">
+            <div id="carousel-track" class="flex transition-transform duration-700 ease-in-out h-full w-[300%]">
+                <!-- Slide 1 -->
+                <div class="w-1/3 flex-shrink-0 relative">
+                    <img src="{% static 'images/carousel_warehouse.png' %}" class="w-full h-full object-cover"
+                        alt="Warehouse Operations">
+                    <div
+                        class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent pt-32 pb-8 px-8 flex items-end">
+                        <div class="text-left w-full">
+                            <h3 class="text-white text-3xl font-bold mb-3 drop-shadow-lg">State-of-the-Art Facilities
+                            </h3>
+                            <p class="text-gray-100 text-lg max-w-2xl drop-shadow-md">Automated sorting and vast
+                                organizational capacity ensures your package is tracked and routed cleanly.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="w-1/3 flex-shrink-0 relative">
+                    <img src="{% static 'images/carousel_fleet.png' %}" class="w-full h-full object-cover"
+                        alt="Modern Fleet">
+                    <div
+                        class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent pt-32 pb-8 px-8 flex items-end">
+                        <div class="text-left w-full">
+                            <h3 class="text-white text-3xl font-bold mb-3 drop-shadow-lg">Modern Delivery Fleet</h3>
+                            <p class="text-gray-100 text-lg max-w-2xl drop-shadow-md">Eco-friendly and highly reliable
+                                vehicles ready to conquer any terrain, climate, or urban maze.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="w-1/3 flex-shrink-0 relative">
+                    <img src="{% static 'images/carousel_delivery.png' %}" class="w-full h-full object-cover"
+                        alt="Customer Fulfillment">
+                    <div
+                        class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent pt-32 pb-8 px-8 flex items-end">
+                        <div class="text-left w-full">
+                            <h3 class="text-white text-3xl font-bold mb-3 drop-shadow-lg">Smiles on Delivery</h3>
+                            <p class="text-gray-100 text-lg max-w-2xl drop-shadow-md">Friendly, professional drivers
+                                trained to ensure the final hand-off leaves a lasting positive impression.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="relative py-20 bg-gray-50 dark:bg-gray-800 transition-colors z-10 w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-12">Why thousands trust
+            SwiftTrack</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div
+                class="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 transform hover:-translate-y-2 transition duration-300">
+                <div
+                    class="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Live Map Intercepts</h3>
+                <p class="text-gray-500 dark:text-gray-400">Track packages globally on our beautiful interactive
+                    maps. Watch your delivery approach in real-time.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div
+                class="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 transform hover:-translate-y-2 transition duration-300">
+                <div
+                    class="w-14 h-14 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Instant Notifications</h3>
+                <p class="text-gray-500 dark:text-gray-400">Receive automated email alerts the second your delivery
+                    status changes. Total peace of mind.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div
+                class="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 transform hover:-translate-y-2 transition duration-300">
+                <div
+                    class="w-14 h-14 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 rounded-xl flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Secure User Hub</h3>
+                <p class="text-gray-500 dark:text-gray-400">Your historical deliveries are kept strictly
+                    confidential behind advanced Django-grade security.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Asset & Testimonial Section -->
+<div
+    class="relative py-20 bg-white dark:bg-gray-900 px-4 sm:px-6 lg:px-8 z-10 w-full transition-colors border-t border-gray-100 dark:border-gray-800">
+    <div class="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-16">
+        <div class="lg:w-1/2">
+            <div
+                class="relative rounded-2xl overflow-hidden glass-effect border border-white/20 dark:border-gray-800 shadow-xl p-2 transform transition hover:scale-[1.02] duration-500">
+                <img class="w-full rounded-xl object-cover h-96 bg-gray-100 dark:bg-gray-800"
+                    src="{% static 'images/driver.png' %}" alt="Professional Delivery Driver Smiling"
+                    onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80'">
+            </div>
+        </div>
+        <div class="lg:w-1/2">
+            <h2 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-6">Our drivers go the extra mile.
+            </h2>
+            <p class="text-lg text-gray-500 dark:text-gray-400 mb-8 italic">
+                "Since switching our logistics infrastructure to SwiftTrack, our customer satisfaction scores have
+                skyrocketed. The Live Map feature is incredibly polished and has reduced our support tickets
+                regarding package whereabouts by 80%."
+            </p>
+            <div class="flex items-center">
+                <div
+                    class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl">
+                    S
+                </div>
+                <div class="ml-4">
+                    <h4 class="text-lg font-bold text-gray-900 dark:text-white">Sarah Jenkins</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Head of Operations, Global Supply</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Advanced Carousel Logic
+        const track = document.getElementById('carousel-track');
+        if (track) {
+            const slidesCount = 3;
+            let currentIndex = 0;
+
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % slidesCount;
+                // Since w-[300%] means 3 columns, and we have 3 items, each item is 33.333% wide inside the track
+                // Translating the track by 33.333% shifts exactly one image
+                track.style.transform = `translateX(-${currentIndex * (100 / slidesCount)}%)`;
+            }, 6000); // changes slide every 6 seconds
+        }
+    });
+</script>
+{% endblock %}

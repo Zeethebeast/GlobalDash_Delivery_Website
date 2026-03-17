@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+
+{% block title %}Track Package | SwiftTrack{% endblock %}
+
+{% block extra_head %}
+<!-- Leaflet CSS for Maps -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<style>
+    #map {
+        height: 400px;
+        z-index: 10;
+        border-radius: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- Search Form -->
+    <div
+        class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-8 max-w-3xl mx-auto transition-colors">
+        <form action="{% url 'track_page' %}" method="GET" class="flex items-center">
+            <input type="text" name="tracking_number" value="{{ tracking_number }}" placeholder="Enter Tracking Number"
+                required
+                class="flex-grow px-4 py-3 rounded-l-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg transition-colors">
+            <button type="submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-r-md font-medium text-lg transition border border-transparent">
+                Track
+            </button>
+        </form>
+    </div>
+
+    {% if tracking_number %}
+    <!-- Results Section Container (Manipulated via JS) -->
+    <div id="result-container" class="hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Delivery Info Card -->
+            <div class="lg:col-span-1 space-y-6">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-6 transition-colors">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 border-b dark:border-gray-700 pb-2">
+                        Delivery Details</h3>
+                    <dl class="space-y-4">
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Tracking Number</dt>
+                            <dd class="mt-1 text-lg font-semibold text-blue-600 dark:text-blue-400" id="dd-tracking">
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Current Status</dt>
+                            <dd class="mt-1">
+                                <span id="dd-status"
+                                    class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                                    Loading...
+                                </span>
+                            </dd>
+                        </div>
+                        <div class="flex justify-between mt-4">
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Sender</dt>
+                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-200 font-medium" id="dd-sender">
+                                </dd>
+                            </div>
+                            <div class="text-right">
+                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Receiver</dt>
+                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-200 font-medium" id="dd-receiver">
+                                </dd>
+                            </div>
+                        </div>
+                        <div class="flex justify-between">
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Departure Loc</dt>
+                                <dd class="mt-1 text-sm text-indigo-600 dark:text-indigo-400 font-medium"
+                                    id="dd-departure"></dd>
+                            </div>
+                            <div class="text-right">
+                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Destination Loc</dt>
+                                <dd class="mt-1 text-sm text-indigo-600 dark:text-indigo-400 font-medium"
+                                    id="dd-destination"></dd>
+                            </div>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Expected Delivery</dt>
+                            <dd class="mt-1 text-sm text-gray-900 dark:text-gray-200" id="dd-expected"></dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <!-- Status History -->
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-6 transition-colors">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b dark:border-gray-700 pb-2">
+                        Status History</h3>
+                    <div class="flow-root">
+                        <ul role="list" class="-mb-8" id="status-history-list">
+                            <!-- Populated by JS -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Card -->
+            <div class="lg:col-span-2">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-6 h-full flex flex-col transition-colors">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Live Location</h3>
+                    <div id="map"
+                        class="flex-grow w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-inner">
+                    </div>
+                    <p class="mt-4 text-sm text-gray-500 dark:text-gray-400 flex justify-between">
+                        <span>Auto-updating map...</span>
+                        <span id="last-updated">Updating...</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading / Error States -->
+    <div id="loading-state" class="text-center py-20">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+        <p class="mt-4 text-gray-600 dark:text-gray-300 font-medium">Locating package...</p>
+    </div>
+    <div id="error-state" class="hidden text-center py-20">
+        <svg class="mx-auto h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <h3 class="mt-4 text-xl font-bold text-gray-900 dark:text-white" id="error-message">Package not found</h3>
+        <p class="mt-2 text-gray-500 dark:text-gray-400">Please check your tracking number and try again.</p>
+    </div>
+
+    {% else %}
+    <!-- Empty State (No Search Yet) -->
+    <div class="text-center py-20">
+        <svg class="mx-auto h-16 w-16 text-gray-300 dark:text-gray-600" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white">Enter a Tracking Number</h3>
+        <p class="mt-2 text-gray-500 dark:text-gray-400">Use the search bar above to locate your delivery.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+{% if tracking_number %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const trackingNumber = "{{ tracking_number }}";
+        const apiUrl = `/api/track/${trackingNumber}/`;
+
+        // UI Elements
+        const loadingState = document.getElementById('loading-state');
+        const errorState = document.getElementById('error-state');
+        const errorMessage = document.getElementById('error-message');
+        const resultContainer = document.getElementById('result-container');
+
+        let map = null;
+        let marker = null;
+
+        function initMap() {
+            // Default center if no coordinates
+            map = L.map('map').setView([0, 0], 2);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+        }
+
+        function updateMap(latitude, longitude) {
+            const latLng = [latitude, longitude];
+            if (!marker) {
+                marker = L.marker(latLng).addTo(map);
+            } else {
+                marker.setLatLng(latLng);
+            }
+            map.flyTo(latLng, 12, { animate: true, duration: 2 });
+            marker.bindPopup(`<b>Package Location</b><br>Lat: ${latitude}, Lon: ${longitude}`).openPopup();
+        }
+
+        function formatDateTime(isoString) {
+            if (!isoString) return 'N/A';
+            const date = new Date(isoString);
+            return date.toLocaleString();
+        }
+
+        function getStatusColor(status) {
+            if (status === 'DELIVERED') return 'bg-green-100 text-green-800';
+            if (status === 'IN_TRANSIT') return 'bg-yellow-100 text-yellow-800';
+            if (status === 'CANCELLED') return 'bg-red-100 text-red-800';
+            return 'bg-gray-100 text-gray-800';
+        }
+
+        function fetchDeliveryData() {
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Delivery not found');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Hide loading, show results
+                    loadingState.classList.add('hidden');
+                    errorState.classList.add('hidden');
+
+                    // Required for map rendering correctly inside a hidden div
+                    if (resultContainer.classList.contains('hidden')) {
+                        resultContainer.classList.remove('hidden');
+                        if (!map) initMap();
+                        setTimeout(() => map.invalidateSize(), 100);
+                    }
+
+                    // Populate Data
+                    document.getElementById('dd-tracking').textContent = data.tracking_number.number;
+                    document.getElementById('dd-sender').textContent = data.sender;
+                    document.getElementById('dd-receiver').textContent = data.receiver;
+                    document.getElementById('dd-departure').textContent = data.departure_location || 'Not Specified';
+                    document.getElementById('dd-destination').textContent = data.destination_location || 'Not Specified';
+                    document.getElementById('dd-expected').textContent = data.expected_delivery_date || 'TBD';
+
+                    // Handle Statuses
+                    if (data.statuses && data.statuses.length > 0) {
+                        const currentStatusObj = data.statuses[0];
+                        const currentStatusEl = document.getElementById('dd-status');
+                        currentStatusEl.textContent = currentStatusObj.status.replace('_', ' ');
+                        currentStatusEl.className = `px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full ${getStatusColor(currentStatusObj.status)}`;
+
+                        // History
+                        let historyHTML = '';
+                        data.statuses.forEach((s, idx) => {
+                            const isLast = idx === data.statuses.length - 1;
+                            historyHTML += `
+                            <li>
+                                <div class="relative pb-8">
+                                    ${!isLast ? '<span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>' : ''}
+                                    <div class="relative flex space-x-3">
+                                        <div>
+                                            <span class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center ring-8 ring-white">
+                                                <svg class="h-4 w-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                            <div>
+                                                <p class="text-sm text-gray-500 dark:text-gray-300">${s.status.replace('_', ' ')} <span class="font-medium text-gray-900 dark:text-white">${s.message || ''}</span></p>
+                                            </div>
+                                            <div class="text-right text-xs whitespace-nowrap text-gray-500">
+                                                <time datetime="${s.timestamp}">${formatDateTime(s.timestamp)}</time>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>`;
+                        });
+                        document.getElementById('status-history-list').innerHTML = historyHTML;
+                    }
+
+                    // Handle Location
+                    if (data.locations && data.locations.length > 0) {
+                        const latestLocation = data.locations[0];
+                        updateMap(latestLocation.latitude, latestLocation.longitude);
+                        document.getElementById('last-updated').textContent = `Last ping: ${formatDateTime(latestLocation.timestamp)}`;
+                    } else {
+                        document.getElementById('last-updated').textContent = 'No location data available yet.';
+                    }
+                })
+                .catch(err => {
+                    loadingState.classList.add('hidden');
+                    resultContainer.classList.add('hidden');
+                    errorState.classList.remove('hidden');
+                    errorMessage.textContent = err.message;
+                });
+        }
+
+        // Fetch data immediately and then poll every 10 seconds for live updates
+        fetchDeliveryData();
+        setInterval(fetchDeliveryData, 10000);
+    });
+</script>
+{% endif %}
+{% endblock %}

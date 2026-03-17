@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Delivery Tracking System{% endblock %}</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+    <!-- Dark Mode Init Script to Prevent FOUC -->
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+    <script>
+        // Enable Tailwind dark mode via class strategy
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body
+    class="bg-gray-50 dark:bg-gray-900 flex flex-col min-h-screen text-gray-800 dark:text-gray-200 antialiased transition-colors duration-300">
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-100 dark:border-gray-700 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="{% url 'home' %}"
+                        class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+                        SwiftTrack
+                    </a>
+                </div>
+                <!-- Links -->
+                <div class="flex items-center space-x-6">
+                    <a href="{% url 'home' %}" class="text-gray-500 hover:text-blue-600 transition font-medium">Home</a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}"
+                        class="text-gray-500 hover:text-blue-600 transition font-medium">Dashboard</a>
+                    <form method="post" action="{% url 'logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="text-red-500 hover:text-red-700 transition font-medium">Logout</button>
+                    </form>
+                    {% else %}
+                    <a href="{% url 'login' %}"
+                        class="text-gray-500 hover:text-blue-600 transition font-medium">Login</a>
+                    <a href="{% url 'signup' %}"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-medium transition shadow-md hover:shadow-lg">Sign
+                        Up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Theme Toggle Floating Button -->
+    <button id="theme-toggle"
+        class="fixed bottom-6 right-6 z-50 p-4 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-yellow-400 rounded-full shadow-lg hover:shadow-2xl transition-all transform hover:scale-110 focus:outline-none">
+        <svg id="theme-toggle-dark-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+        </svg>
+        <svg id="theme-toggle-light-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 4.22a1 1 0 01-1.415-1.414l.707-.707a1 1 0 011.414 1.414l-.707.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-4.22 4.22a1 1 0 011.414-1.415l.707.707a1 1 0 01-1.414 1.414l-.707-.707zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-4.22a1 1 0 01-1.415 1.414l-.707-.707a1 1 0 011.414-1.414l.707.707zM2 10a1 1 0 011-1h1a1 1 0 110 2H3a1 1 0 01-1-1zm4.22-4.22a1 1 0 01-1.414-1.415l-.707.707a1 1 0 011.414 1.414l.707-.707zM10 4a6 6 0 100 12 6 6 0 000-12z">
+            </path>
+        </svg>
+    </button>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto transition-colors">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-gray-400 dark:text-gray-500 text-sm">
+                &copy; {{ now|date:"Y" }} SwiftTrack Logistics. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    {% block extra_scripts %}{% endblock %}
+
+    <script>
+        // Global Dark Mode Toggle Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+        // fallback to document Element classlist since we removed the wrapper approach
+        const isDark = document.documentElement.classList.contains('dark');
+
+        if (isDark) {
+            lightIcon.classList.remove('hidden');
+        } else {
+            darkIcon.classList.remove('hidden');
+        }
+
+        themeToggleBtn.addEventListener('click', function () {
+            darkIcon.classList.toggle('hidden');
+            lightIcon.classList.toggle('hidden');
+
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
