@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}GlobalDash | About Us{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="relative bg-slate-900 text-white overflow-hidden py-32">
+    <div class="absolute inset-0 opacity-20">
+        <svg class="absolute left-1/2 top-1/2 w-[1200px] -translate-x-1/2 -translate-y-1/2" viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="600" cy="600" r="500" stroke="#3b82f6" stroke-width="2" stroke-dasharray="10 10" />
+            <circle cx="600" cy="600" r="300" stroke="#60a5fa" stroke-width="2" />
+        </svg>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+        <h1 class="text-5xl lg:text-7xl font-bold brand-font mb-6 drop-shadow-lg">Mission <span class="text-blue-500">First</span>.</h1>
+        <p class="text-xl lg:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+            We're building the infrastructure that powers modern local commerce. Empowering businesses to deliver anything, anywhere, seamlessly.
+        </p>
+    </div>
+</div>
+
+<!-- Values Grid -->
+<div class="py-24 bg-white dark:bg-gray-900 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-white brand-font">Our Values</h2>
+            <p class="text-slate-500 mt-4 text-lg">The core principles that drive our innovation.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <!-- Value 1 -->
+            <div class="bg-slate-50 dark:bg-gray-800 border border-slate-100 dark:border-gray-700 p-10 rounded-3xl hover:-translate-y-2 transition duration-300">
+                <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Uncompromising Reliability</h3>
+                <p class="text-slate-600 dark:text-gray-400 leading-relaxed">
+                    Businesses stake their reputation on our technology. We build robust systems that stay up and perform when it matters most.
+                </p>
+            </div>
+            <!-- Value 2 -->
+            <div class="bg-slate-50 dark:bg-gray-800 border border-slate-100 dark:border-gray-700 p-10 rounded-3xl hover:-translate-y-2 transition duration-300">
+                <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Unprecedented Speed</h3>
+                <p class="text-slate-600 dark:text-gray-400 leading-relaxed">
+                    Time is the most valuable asset in logistics. Our AI routing algorithms optimize every single mile to maximize efficiency.
+                </p>
+            </div>
+            <!-- Value 3 -->
+            <div class="bg-slate-50 dark:bg-gray-800 border border-slate-100 dark:border-gray-700 p-10 rounded-3xl hover:-translate-y-2 transition duration-300">
+                <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-sm">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Global Scale</h3>
+                <p class="text-slate-600 dark:text-gray-400 leading-relaxed">
+                    A platform designed to grow with our merchants. From local shops to multi-national operations smoothly.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Numbers Section -->
+<div class="py-20 bg-blue-600 border-y border-blue-700">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
+            <div class="p-6">
+                <div class="text-4xl md:text-5xl font-bold brand-font drop-shadow-md mb-2">10M+</div>
+                <div class="text-blue-200 font-semibold tracking-wider text-sm uppercase">Deliveries Handled</div>
+            </div>
+            <div class="p-6">
+                <div class="text-4xl md:text-5xl font-bold brand-font drop-shadow-md mb-2">50+</div>
+                <div class="text-blue-200 font-semibold tracking-wider text-sm uppercase">Countries Served</div>
+            </div>
+            <div class="p-6">
+                <div class="text-4xl md:text-5xl font-bold brand-font drop-shadow-md mb-2">15,000</div>
+                <div class="text-blue-200 font-semibold tracking-wider text-sm uppercase">Active Drivers</div>
+            </div>
+            <div class="p-6">
+                <div class="text-4xl md:text-5xl font-bold brand-font drop-shadow-md mb-2">99.9%</div>
+                <div class="text-blue-200 font-semibold tracking-wider text-sm uppercase">Uptime Score</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
