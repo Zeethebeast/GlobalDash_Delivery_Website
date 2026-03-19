@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}GlobalDash | API Documentation{% endblock %}
+
+{% block content %}
+<div class="bg-white dark:bg-gray-900 min-h-screen border-t border-slate-100 dark:border-gray-800 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row">
+        
+        <!-- Sticky Sidebar -->
+        <aside class="w-full md:w-64 border-r border-slate-100 dark:border-gray-800 md:min-h-screen py-8 px-4 md:px-0 md:pr-8 md:sticky top-20 h-max">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 px-4">Getting Started</h4>
+            <ul class="space-y-1 mb-8">
+                <li><a href="#" class="block px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 dark:bg-blue-900/20 rounded-lg">Introduction</a></li>
+                <li><a href="#" class="block px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-gray-800 rounded-lg transition">Authentication</a></li>
+                <li><a href="#" class="block px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-gray-800 rounded-lg transition">Errors</a></li>
+            </ul>
+
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 px-4">Resources</h4>
+            <ul class="space-y-1">
+                <li><a href="#" class="block px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-gray-800 rounded-lg transition">Orders</a></li>
+                <li><a href="#" class="block px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-gray-800 rounded-lg transition">Drivers</a></li>
+                <li><a href="#" class="block px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-gray-800 rounded-lg transition">Webhooks</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Doc Content -->
+        <main class="flex-1 py-10 px-4 md:px-10">
+            
+            <div class="mb-16">
+                <h1 class="text-4xl font-bold text-slate-900 dark:text-white brand-font mb-4">Orders API</h1>
+                <p class="text-slate-600 dark:text-slate-400 text-lg">The Orders API allows you to create, manage, and track deliveries programmatically via REST.</p>
+            </div>
+
+            <div class="mb-12">
+                <div class="flex items-center gap-4 mb-6">
+                    <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 font-bold text-sm rounded">GET</span>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">List all orders</h2>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 mb-6">Returns a paginated list of all active and historical orders associated with your account.</p>
+                
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4 border-b border-slate-100 dark:border-gray-800 pb-2">Endpoint</h3>
+                <div class="bg-slate-100 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-slate-800 dark:text-gray-300 mb-8 overflow-x-auto">
+                    https://api.globaldash.com/v1/orders
+                </div>
+
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4 border-b border-slate-100 dark:border-gray-800 pb-2">Example Response</h3>
+                
+                <!-- Simulated Code Block -->
+                <div class="relative bg-[#0f172a] rounded-xl overflow-hidden shadow-2xl border border-slate-800">
+                    <div class="flex items-center px-4 py-3 bg-[#1e293b] border-b border-slate-800">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <span class="ml-4 text-xs font-mono text-slate-400">response.json</span>
+                    </div>
+                    <div class="p-6 overflow-x-auto">
+<pre class="font-mono text-sm leading-relaxed text-slate-300">
+<span class="text-slate-500">{</span>
+  <span class="text-blue-400">"object"</span><span class="text-slate-500">:</span> <span class="text-green-400">"list"</span><span class="text-slate-500">,</span>
+  <span class="text-blue-400">"data"</span><span class="text-slate-500">: [
+    {</span>
+      <span class="text-blue-400">"id"</span><span class="text-slate-500">:</span> <span class="text-green-400">"ord_9824X"</span><span class="text-slate-500">,</span>
+      <span class="text-blue-400">"status"</span><span class="text-slate-500">:</span> <span class="text-green-400">"in_transit"</span><span class="text-slate-500">,</span>
+      <span class="text-blue-400">"customer"</span><span class="text-slate-500">: {</span>
+        <span class="text-blue-400">"name"</span><span class="text-slate-500">:</span> <span class="text-green-400">"John Doe"</span><span class="text-slate-500">,</span>
+        <span class="text-blue-400">"address"</span><span class="text-slate-500">:</span> <span class="text-green-400">"123 Main St"</span>
+      <span class="text-slate-500">},</span>
+      <span class="text-blue-400">"driver"</span><span class="text-slate-500">:</span> <span class="text-green-400">"drv_102"</span>
+    <span class="text-slate-500">}
+  ]
+}</span>
+</pre>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+        
+    </div>
+</div>
+{% endblock %}

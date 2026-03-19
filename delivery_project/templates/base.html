@@ -1,112 +1,203 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Delivery Tracking System{% endblock %}</title>
-    <!-- Tailwind CSS -->
+    <title>{% block title %}GlobalDash | Professional Delivery Management{% endblock %}</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
+
+        h1,
+        h2,
+        h3,
+        .brand-font {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* GlobalDash-style subtle scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
     </style>
-    <!-- Dark Mode Init Script to Prevent FOUC -->
+
     <script>
+        // Enhanced Dark Mode Init
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark')
         }
-    </script>
-    <script>
-        // Enable Tailwind dark mode via class strategy
+
         tailwind.config = {
             darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
         }
     </script>
     {% block extra_head %}{% endblock %}
 </head>
 
 <body
-    class="bg-gray-50 dark:bg-gray-900 flex flex-col min-h-screen text-gray-800 dark:text-gray-200 antialiased transition-colors duration-300">
-    <!-- Navbar -->
-    <nav class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-100 dark:border-gray-700 transition-colors">
+    class="bg-white dark:bg-gray-900 flex flex-col min-h-screen text-slate-900 dark:text-slate-200 antialiased transition-colors duration-300">
+
+    <nav
+        class="sticky top-0 z-50 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-slate-100 dark:border-gray-800 transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center">
-                    <a href="{% url 'home' %}"
-                        class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-                        SwiftTrack
+            <div class="flex justify-between h-20">
+
+                <div class="flex items-center gap-10">
+                    <a href="{% url 'home' %}" class="flex items-center space-x-2 group">
+                        <div
+                            class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white shadow-lg group-hover:rotate-12 transition-transform">
+                            <i class="fas fa-paper-plane text-sm"></i>
+                        </div>
+                        <span class="brand-font text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+                            GlobalDash
+                        </span>
                     </a>
+
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="{% url 'home' %}"
+                            class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-600 transition">Home</a>
+                        <a href="{% url 'about' %}"
+                            class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-600 transition">About Us</a>
+                        <a href="{% url 'contact' %}"
+                            class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-600 transition">Contact Us</a>
+                    </div>
                 </div>
-                <!-- Links -->
-                <div class="flex items-center space-x-6">
-                    <a href="{% url 'home' %}" class="text-gray-500 hover:text-blue-600 transition font-medium">Home</a>
+
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle"
+                        class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-gray-800 rounded-lg transition">
+                        <i id="theme-toggle-dark-icon" class="fas fa-moon hidden"></i>
+                        <i id="theme-toggle-light-icon" class="fas fa-sun hidden"></i>
+                    </button>
+
                     {% if user.is_authenticated %}
                     <a href="{% url 'dashboard' %}"
-                        class="text-gray-500 hover:text-blue-600 transition font-medium">Dashboard</a>
+                        class="text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-brand-600 transition">Dashboard</a>
                     <form method="post" action="{% url 'logout' %}" class="inline">
                         {% csrf_token %}
                         <button type="submit"
-                            class="text-red-500 hover:text-red-700 transition font-medium">Logout</button>
+                            class="text-sm font-semibold text-red-500 hover:text-red-600 transition">Logout</button>
                     </form>
                     {% else %}
                     <a href="{% url 'login' %}"
-                        class="text-gray-500 hover:text-blue-600 transition font-medium">Login</a>
+                        class="hidden sm:block text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-brand-600 transition">Login</a>
                     <a href="{% url 'signup' %}"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-medium transition shadow-md hover:shadow-lg">Sign
-                        Up</a>
+                        class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-lg text-sm font-bold transition shadow-md hover:shadow-brand-600/20">
+                        Get Started Free
+                    </a>
                     {% endif %}
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Theme Toggle Floating Button -->
-    <button id="theme-toggle"
-        class="fixed bottom-6 right-6 z-50 p-4 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-yellow-400 rounded-full shadow-lg hover:shadow-2xl transition-all transform hover:scale-110 focus:outline-none">
-        <svg id="theme-toggle-dark-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg">
-            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-        </svg>
-        <svg id="theme-toggle-light-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 4.22a1 1 0 01-1.415-1.414l.707-.707a1 1 0 011.414 1.414l-.707.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-4.22 4.22a1 1 0 011.414-1.415l.707.707a1 1 0 01-1.414 1.414l-.707-.707zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-4.22a1 1 0 01-1.415 1.414l-.707-.707a1 1 0 011.414-1.414l.707.707zM2 10a1 1 0 011-1h1a1 1 0 110 2H3a1 1 0 01-1-1zm4.22-4.22a1 1 0 01-1.414-1.415l-.707.707a1 1 0 011.414 1.414l.707-.707zM10 4a6 6 0 100 12 6 6 0 000-12z">
-            </path>
-        </svg>
-    </button>
-
-    <!-- Main Content -->
     <main class="flex-grow">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto transition-colors">
-        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-            <p class="text-center text-gray-400 dark:text-gray-500 text-sm">
-                &copy; {{ now|date:"Y" }} SwiftTrack Logistics. All rights reserved.
-            </p>
+    <footer
+        class="bg-slate-50 dark:bg-gray-800/50 border-t border-slate-200 dark:border-gray-800 pt-16 pb-8 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-12">
+                <div class="col-span-2">
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="w-6 h-6 bg-brand-600 rounded flex items-center justify-center text-white text-xs">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                        <span
+                            class="brand-font text-xl font-bold tracking-tight text-slate-900 dark:text-white">GlobalDash</span>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 max-w-xs mb-6 text-sm leading-relaxed">
+                        The world's most intuitive local delivery management platform for modern businesses.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-6 text-sm uppercase tracking-wider">Platform
+                    </h4>
+                    <ul class="space-y-4 text-sm text-slate-500 dark:text-slate-400">
+                        <li><a href="{% url 'dashboard' %}" class="hover:text-brand-600 transition">Merchant Dashboard</a></li>
+                        <li><a href="{% url 'live_tracking' %}" class="hover:text-brand-600 transition">Live Tracking</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-6 text-sm uppercase tracking-wider">Company
+                    </h4>
+                    <ul class="space-y-4 text-sm text-slate-500 dark:text-slate-400">
+                        <li><a href="{% url 'about' %}" class="hover:text-brand-600 transition">About Us</a></li>
+                        <li><a href="{% url 'careers' %}" class="hover:text-brand-600 transition">Careers</a></li>
+                        <li><a href="{% url 'contact' %}" class="hover:text-brand-600 transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-6 text-sm uppercase tracking-wider">Support
+                    </h4>
+                    <ul class="space-y-4 text-sm text-slate-500 dark:text-slate-400">
+                        <li><a href="#" class="hover:text-brand-600 transition">Help Center</a></li>
+                        <li><a href="{% url 'api_docs' %}" class="hover:text-brand-600 transition">API Docs</a></li>
+                        <li><a href="#" class="hover:text-brand-600 transition">Status</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div
+                class="pt-8 border-t border-slate-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-slate-400 text-xs">
+                    &copy; {{ now|date:"Y" }} GlobalDash Logistics Inc. All rights reserved.
+                </p>
+                <div class="flex space-x-6 text-xs text-slate-400">
+                    <a href="#" class="hover:text-slate-600">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-600">Terms of Service</a>
+                </div>
+            </div>
         </div>
     </footer>
 
     {% block extra_scripts %}{% endblock %}
 
     <script>
-        // Global Dark Mode Toggle Logic
+        // Optimized Theme Toggle
         const themeToggleBtn = document.getElementById('theme-toggle');
         const darkIcon = document.getElementById('theme-toggle-dark-icon');
         const lightIcon = document.getElementById('theme-toggle-light-icon');
-        // fallback to document Element classlist since we removed the wrapper approach
-        const isDark = document.documentElement.classList.contains('dark');
 
-        if (isDark) {
+        if (document.documentElement.classList.contains('dark')) {
             lightIcon.classList.remove('hidden');
         } else {
             darkIcon.classList.remove('hidden');
@@ -116,22 +207,12 @@
             darkIcon.classList.toggle('hidden');
             lightIcon.classList.toggle('hidden');
 
-            if (localStorage.getItem('color-theme')) {
-                if (localStorage.getItem('color-theme') === 'light') {
-                    document.documentElement.classList.add('dark');
-                    localStorage.setItem('color-theme', 'dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.setItem('color-theme', 'light');
-                }
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
             } else {
-                if (document.documentElement.classList.contains('dark')) {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.setItem('color-theme', 'light');
-                } else {
-                    document.documentElement.classList.add('dark');
-                    localStorage.setItem('color-theme', 'dark');
-                }
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
             }
         });
     </script>

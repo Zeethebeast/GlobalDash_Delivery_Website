@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block title %}GlobalDash | Live Tracking{% endblock %}
+
+{% block content %}
+<div class="bg-slate-50 dark:bg-gray-900 min-h-screen py-12 transition-colors duration-300">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Tracking Header -->
+        <div
+            class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-slate-100 dark:border-gray-700 p-6 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900 dark:text-white brand-font tracking-tight">Order #GD-9824X
+                </h1>
+                <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">Estimated Delivery: Today by 4:30 PM</p>
+            </div>
+            <div>
+                <span
+                    class="inline-flex items-center px-4 py-2 rounded-full text-sm font-bold bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">
+                    <span class="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></span>
+                    In Transit
+                </span>
+            </div>
+        </div>
+
+        <!-- Status Stepper -->
+        <div
+            class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-slate-100 dark:border-gray-700 p-8 mb-8 overflow-hidden">
+            <div class="relative">
+                <div class="absolute inset-0 top-1/2 w-full h-1 bg-slate-100 dark:bg-gray-700 -translate-y-1/2 z-0">
+                </div>
+                <div class="absolute inset-0 top-1/2 w-1/2 h-1 bg-blue-600 -translate-y-1/2 z-0"></div>
+
+                <div class="relative z-10 flex justify-between">
+                    <!-- Step 1 -->
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold shadow-lg shadow-blue-600/30">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span class="mt-3 text-sm font-semibold text-slate-800 dark:text-gray-200">Order Placed</span>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold shadow-lg shadow-blue-600/30">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span class="mt-3 text-sm font-semibold text-slate-800 dark:text-gray-200">Picked Up</span>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-white dark:bg-gray-800 border-4 border-blue-600 text-blue-600 flex items-center justify-center font-bold animate-pulse">
+                            <span class="w-3 h-3 bg-blue-600 rounded-full"></span>
+                        </div>
+                        <span class="mt-3 text-sm font-bold text-blue-600 dark:text-blue-400">Out for Delivery</span>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-slate-100 dark:bg-gray-700 border-4 border-slate-200 dark:border-gray-600 text-slate-400 flex items-center justify-center font-bold">
+                            <span class="w-2 h-2 bg-slate-300 dark:bg-gray-500 rounded-full"></span>
+                        </div>
+                        <span class="mt-3 text-sm font-semibold text-slate-400 dark:text-gray-500">Delivered</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map & Driver Info -->
+        <div
+            class="relative bg-slate-200 dark:bg-gray-800 rounded-3xl h-[500px] border border-slate-100 dark:border-gray-700 overflow-hidden shadow-inner flex items-center justify-center">
+            <div class="text-center text-slate-400 dark:text-gray-600 flex flex-col items-center">
+                <i class="fas fa-map-marked-alt text-6xl mb-4"></i>
+                <p class="font-semibold text-lg">Interactive Map View Placeholder</p>
+                <p class="text-sm">Real-time driver location rendered here.</p>
+            </div>
+
+            <!-- Floating Driver Card (Glassmorphism) -->
+            <div
+                class="absolute bottom-6 left-6 right-6 sm:left-auto sm:right-6 sm:w-80 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-white/40 dark:border-gray-700 rounded-2xl p-5 shadow-2xl">
+                <div class="flex items-center gap-4 mb-4">
+                    <div
+                        class="w-14 h-14 rounded-full bg-slate-200 dark:bg-gray-700 border-2 border-white dark:border-gray-800 flex items-center justify-center overflow-hidden">
+                        <i class="fas fa-user-circle text-slate-400 text-4xl mt-1"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white">Marcus Johnson</h4>
+                        <div class="flex text-yellow-400 text-xs">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="text-slate-500 ml-1">4.9</span>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="flex justify-between items-center text-sm mb-4 bg-slate-50 dark:bg-gray-800 p-3 rounded-xl border border-slate-100 dark:border-gray-700">
+                    <span class="text-slate-500">Toyota Prius</span>
+                    <span class="font-bold text-slate-800 dark:text-gray-200">XYZ-123</span>
+                </div>
+                <button
+                    class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                    <i class="fas fa-phone-alt"></i> Call Driver
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
