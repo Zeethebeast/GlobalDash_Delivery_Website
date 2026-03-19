@@ -85,3 +85,20 @@ python3 manage.py runserver
 7. You should see the Tracking details and a **visual Map** centered on your package's coordinates.
 
 Enjoy your Delivery Tracking App!
+
+## Deploying to Render
+GlobalDash is fully configured for deployment on [Render](https://render.com/).
+
+### Steps to Deploy
+1. **Connect your Repository**: Commit these changes and push to GitHub/GitLab. Connect the repository to your Render account.
+2. **Use the Blueprint**: Render will automatically detect the `render.yaml` file in the root directory. It will configure the Web Service and PostgreSQL database automatically.
+3. **Alternative Manual Setup**: 
+   - Create a new PostgreSQL Database on Render.
+   - Create a new Web Service.
+   - Set the Build Command to: `./build.sh`
+   - Set the Start Command to: `gunicorn config.wsgi:application`
+   - Add Environment Variables:
+     - `PYTHON_VERSION`: `3.12.0`
+     - `DATABASE_URL`: (Your Render Postgres internal URL)
+     - `SECRET_KEY`: (Auto Generator)
+4. Your application will be live at `https://globaldash-delivery.onrender.com` (or similar).
