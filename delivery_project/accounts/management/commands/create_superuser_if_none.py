@@ -2,25 +2,22 @@ import os
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 
+# Default admin credentials (used if env vars are not set)
+DEFAULT_USERNAME = "Zee01470"
+DEFAULT_EMAIL = "admin@globaldash.com"
+DEFAULT_PASSWORD = "Zee01470"
+
 
 class Command(BaseCommand):
-    help = "Creates or updates a superuser from environment variables."
+    help = "Creates or updates the admin superuser on every deploy."
 
     def handle(self, *args, **options):
         User = get_user_model()
 
-        username = os.environ.get("DJANGO_SUPERUSER_USERNAME")
-        email = os.environ.get("DJANGO_SUPERUSER_EMAIL", "")
-        password = os.environ.get("DJANGO_SUPERUSER_PASSWORD")
-
-        if not username or not password:
-            self.stdout.write(
-                self.style.WARNING(
-                    "DJANGO_SUPERUSER_USERNAME and DJANGO_SUPERUSER_PASSWORD "
-                    "env vars must be set. Skipping superuser creation."
-                )
-            )
-            return
+        # Use env vars if set, otherwise fall back to defaults
+        username = os.environ.get("DJANGO_SUPERUSER_USERNAME") or DEFAULT_USERNAME
+        email = os.environ.get("DJANGO_SUPERUSER_EMAIL") or DEFAULT_EMAIL
+        password = os.environ.get("DJANGO_SUPERUSER_PASSWORD") or DEFAULT_PASSWORD
 
         try:
             user = User.objects.get(username=username)
